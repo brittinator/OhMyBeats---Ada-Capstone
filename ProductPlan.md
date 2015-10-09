@@ -13,6 +13,17 @@ http://www.adweek.com/adfreak/zac-posen-debuts-led-dress-made-and-female-coders-
 A fourier transform will be used to deconvolute the audio signals into individual frequency sinusoidal waves, representing frequncies.
 ![visual representation](http://www.revisemri.com/images/ft.gif)
 
+## Frequency Buckets
+Sub-bass > Bass > Low midrange > Midrange > Upper midrange > Presence and Brilliance
+
+Sub Bass: 20 to 60 Hz
+Bass: 60 to 250 Hz
+Low Midrange: 250 to 500 Hz
+Midrange: 500 Hz to 2 kHz
+Upper Midrange: 2 to 4 kHz
+Presence: 4 kHz to 6 kHz
+Brilliance: 6 kHz to 20 kHz
+
 ## Target Audience
 - Primarily, myself.  I love music, costuming, and programming and want to combine them all.
 
