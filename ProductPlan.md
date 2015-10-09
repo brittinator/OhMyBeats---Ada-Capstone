@@ -3,13 +3,15 @@
 ## Overview
 Oh My Beats is a wearable technology that will compliment any person who wants to share their music with people in a novel way.  Oh My Beats aims to be a gender neutral accessory so as to be an inclusive as possible.
 
-This project is a top hat that will display a live-view of your music using LEDs. the LEDs will show up as equalizer bars, and will have the ability to change color.
+This project is a top hat that will display a live-view of your music using LEDs. The LEDs will show up as equalizer bars, and will have the ability to change color.
 
 ## Market Research
 LED Dress: A fashion designer Zac Posen partnered with Made With Code for a spring 2016 collection at New York Fashion Week. They made a dress that can change the leds using programming. Thus far it is set patterns and not based on musical input.
 http://www.adweek.com/adfreak/zac-posen-debuts-led-dress-made-and-female-coders-166801
 
-
+## Technique
+A fourier transform will be used to deconvolute the audio signals into individual frequency sinusoidal waves, representing frequncies.
+![visual representation](http://www.revisemri.com/images/ft.gif)
 
 ## Target Audience
 - Primarily, myself.  I love music, costuming, and programming and want to combine them all.
@@ -20,16 +22,15 @@ This hat could be desirable to individuals who enjoy going to festivals, raves, 
 - Unmet Need: A interactive wearable piece of hardware that will respond to input
 
 ## Specifications
-- version 1.0 will be gender neutral in the form of a hat to have the largest user base
+- Version 1.0 will be gender neutral in the form of a hat to have the largest user base.
 - Top Hat with bars of RGB LEDs lining the front of the hat.
 - Input will be transfered via bluetooth to the hat's microcontroller, and the hat's LEDs will be turned into a visual equalizer.
-- version 1.1 (stretch goal) will include more inputs from other sources: weather, moon phase, using APIs already out there.
-- version 2.0 could be an LED skirt/kilt - now with more LEDs!
+- Version 1.1 (stretch goal) will include more inputs from other sources: weather, moon phase, using APIs already out there.
+- Version 2.0 could be an LED skirt/kilt - now with more LEDs!
 
 ### Features
 **Proof of Concept (POC)**
-
- Displaying dots on a computer monitor when music is played. These dots will each represent a single LED position.
+Will display dots on a computer monitor when music is played. These dots will each represent a single LED position.
 
 These features will address the user's needs
 - wearable item of clothing that when hooked up to a microcontroller, will light up
