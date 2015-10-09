@@ -6,8 +6,11 @@ Oh My Beats is a wearable technology that will compliment any person who wants t
 This project is a top hat that will display a live-view of your music using LEDs. The LEDs will show up as equalizer bars, and will have the ability to change color.
 
 ## Market Research
-LED Dress: A fashion designer Zac Posen partnered with Made With Code for a spring 2016 collection at New York Fashion Week. They made a dress that can change the leds using programming. Thus far it is set patterns and not based on musical input.
-[article](http://www.adweek.com/adfreak/zac-posen-debuts-led-dress-made-and-female-coders-166801)
+
+There are many existing wearables, but I have found none that involve a hat, incorporate input from an external source (music), and translate it into lights lighting up.
+
+LED Dress: A fashion designer called Zac Posen partnered with Made With Code to create a dress for a spring 2016 collection at New York Fashion Week. This dress changes LED colors using programming from participants from Make With Code. Thus far it has set patterns the user can choose from.
+[Article here](http://www.adweek.com/adfreak/zac-posen-debuts-led-dress-made-and-female-coders-166801)
 
 ## Technique
 A fourier transform will be used to deconvolute the audio signals into individual frequency sinusoidal waves, representing frequncies.
@@ -26,12 +29,11 @@ Source: [Audio Spectrum Explained](http://www.teachmeaudio.com/mixing/techniques
 * Brilliance: 6 kHz to 20 kHz
 
 ## Target Audience
+This hat could be desirable to individuals who enjoy going to festivals, raves, or people who want a novel costume.  That being said...
 - Primarily, myself.  I love music, costuming, and programming and want to combine them all.
 
-This hat could be desirable to individuals who enjoy going to festivals, raves, or people who want a novel costume.
-
-- Unmet Need: A costume with a light component
-- Unmet Need: A interactive wearable piece of hardware that will respond to input
+- Unmet Need: A costume with a light component.
+- Unmet Need: A interactive wearable piece of hardware that will respond to input.
 
 ## Specifications
 - Version 1.0 will be gender neutral in the form of a hat to have the largest user base.
