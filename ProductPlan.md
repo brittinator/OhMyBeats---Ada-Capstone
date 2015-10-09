@@ -7,22 +7,23 @@ This project is a top hat that will display a live-view of your music using LEDs
 
 ## Market Research
 LED Dress: A fashion designer Zac Posen partnered with Made With Code for a spring 2016 collection at New York Fashion Week. They made a dress that can change the leds using programming. Thus far it is set patterns and not based on musical input.
-http://www.adweek.com/adfreak/zac-posen-debuts-led-dress-made-and-female-coders-166801
+[article](http://www.adweek.com/adfreak/zac-posen-debuts-led-dress-made-and-female-coders-166801)
 
 ## Technique
 A fourier transform will be used to deconvolute the audio signals into individual frequency sinusoidal waves, representing frequncies.
+
 ![visual representation](http://www.revisemri.com/images/ft.gif)
 
 ## Frequency Buckets
-Sub-bass > Bass > Low midrange > Midrange > Upper midrange > Presence and Brilliance
-Source: [Audio Spectrum Explained](http://www.teachmeaudio.com/mixing/techniques/audio-spectrum)
-Sub Bass: 20 to 60 Hz
-Bass: 60 to 250 Hz
-Low Midrange: 250 to 500 Hz
-Midrange: 500 Hz to 2 kHz
-Upper Midrange: 2 to 4 kHz
-Presence: 4 kHz to 6 kHz
-Brilliance: 6 kHz to 20 kHz
+Sub-bass > Bass > Low midrange > Midrange > Upper midrange > Presence and Brilliance  
+Source: [Audio Spectrum Explained](http://www.teachmeaudio.com/mixing/techniques/audio-spectrum)  
+* Sub Bass: 20 to 60 Hz
+* Bass: 60 to 250 Hz
+* Low Midrange: 250 to 500 Hz
+* Midrange: 500 Hz to 2 kHz
+* Upper Midrange: 2 to 4 kHz
+* Presence: 4 kHz to 6 kHz
+* Brilliance: 6 kHz to 20 kHz
 
 ## Target Audience
 - Primarily, myself.  I love music, costuming, and programming and want to combine them all.
