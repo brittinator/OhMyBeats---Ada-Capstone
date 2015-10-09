@@ -1,3 +1,0 @@
-# Procedure
-
-## Materials
