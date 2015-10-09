@@ -15,7 +15,7 @@ A fourier transform will be used to deconvolute the audio signals into individua
 
 ## Frequency Buckets
 Sub-bass > Bass > Low midrange > Midrange > Upper midrange > Presence and Brilliance
-
+Source: [Audio Spectrum Explained](http://www.teachmeaudio.com/mixing/techniques/audio-spectrum)
 Sub Bass: 20 to 60 Hz
 Bass: 60 to 250 Hz
 Low Midrange: 250 to 500 Hz
