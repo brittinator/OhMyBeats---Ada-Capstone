@@ -1,21 +1,43 @@
 # Procedure
+This is a guide for how to set up and implement a wearable top hat that responds to music input by displaying a visual equalizer.
 
 ## Materials
-* 1 M x Adafruit NeoPixel Digital RGB LED Strip - Black 60 LED (BLACK) [ID:1461] (http://www.adafruit.com/products/1461) - $24.95 USD
-* RedBearLab Blend Micro (http://store.redbearlab.com/products/blendmicro) - $26.90 USD
+(All prices in USD)
+* Black Top Hat = $12.00
+* 1 M x Adafruit NeoPixel Digital RGB LED Strip - Black 60 LED (BLACK) [ID:1461] (http://www.adafruit.com/products/1461) = $24.95
+* RedBearLab Blend Micro (http://store.redbearlab.com/products/blendmicro) = $26.90
+* 1 x 74AHCT125 - Quad Level-Shifter (3V to 5V) (74AHCT125) [ID:1787] = $1.50
+* 1 x 4 x AA Battery Holder with On/Off Switch[ID:830] = $2.95
+* 1 x Premium Male/Male Jumper Wires - 20 x 6" (150mm)[ID:1957] = $1.95
+* 1 x Female DC Power adapter - 2.1mm jack to screw terminal block[ID:368] =
+$2.00
+* 1 x Male DC Power adapter - 2.1mm plug to screw terminal block[ID:369] =
+$2.00
+* resister
+* capacitor
+* cords  
+* solder
+* solder gun
+* 4 AA rechargeable batteries
+* 5V battery holder
 
 NeoPixels are Adafruit's house brand of Red Green Blue (RGB) LEDs (Light Emitting Diodes) that are also addressable.  This means the pixels know their location, which makes programming what you want to display a little easier.
 
 The Blend Micro is an Arduino microcontroller that also houses an on-board bluetooth chip.  The micro utilizes bluetooth 4.0 Low Energy, (BLE) which makes this board not as power hungry as some other arduino shields or raspberry pi dongles. The micro-controller unit (MCU) is Atmel ATmega32U4 and the BLE chip is Nordic nRF8001.
 
-## Software/Gems
-* ruby-audio gem - ruby-audio wraps around libsndfile to provide simplified sound reading and writing support to ruby programs
-* fftw-3.3.4 - download this from:
-* NArray : https://github.com/masa16/narray
-* ruby-fftw3 - This is a ruby gem that is a wrapper to the Fastest Fourier Transfor in the West, a collection of C routines  https://rubygems.org/gems/fftw3/versions/0.3
+## Software
+* Computer: Macbook Pro running Yosemite v 10.10.5
+* Processing software: Python 2.7.10 :: Anaconda 2.3.0 (x86_64)
+  * Install from [python's website](https://www.python.org/downloads/)
+* On-board software: In-house C++ using Arduino IDE, version 1.6.5
+  * Install from [Arduino's website](https://www.arduino.cc/en/Guide/HomePage)
+* Follow getting started [manual](http://redbearlab.com/getting-started-blendmicro) on how to get the extra libraries needed. I followed the [Quickstart with Codebender](http://redbearlab.com/quick-start-codebender) link.  
 
-to install ruby-audio
-`gem install ruby-audio`
+*
+
+
+to start python notebooks: `$ipython notebook`
+
 
 libsndfile
 `brew install libsndfile`
@@ -42,25 +64,3 @@ gem 'narray', '~> 0.6.1.1'
 in terminal
 `install bundler`
 `bundle`
-
-* Nu Wav
-NuWav is a pure ruby audio WAV file parser and writer. It supports Broadcast Wave Format (BWF), inclluding MPEG audio data, and the public radio standard cart chunk.
-https://rubygems.org/gems/nu_wav/versions/0.5.1
- ` gem install nu_wav `
-
-* Minim
-https://github.com/ddf/Minim/releases/tag/v2.2.1
-https://github.com/O-I/music_visualizer_intro
-procedure:
-https://github.com/jashkenas/ruby-processing/wiki/Installing-ruby-processing-on-the-mac
-brew install wget
-`gem install ruby-processing`
-`rp5 setup install`
-rp5 setup unpack_samples
-`rp5 create visualizer `
-
-
-
-
-* jruby
-`rvm install jruby`

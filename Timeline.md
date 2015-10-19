@@ -15,14 +15,14 @@ Week 2
     * any adapters/shields (wifi/bluetooth) on order (done - all-in-one so unneccessary)
 
 Week 3
-  - eta for microprocessor is Monday
-  - LEDs will also probably be delivered sometime this week
-  - begin work with Echo Nest API or sound algorithms
+  - x eta for microprocessor is Monday
+  - x LEDs will also probably be delivered sometime this week
+  - x begin work with Echo Nest API or sound algorithms
   - determine how going to get name/artist from spotify to spit out segment data
-  - do baby step microprocessor + LEDs project to get feet wet
+  - x do baby step microprocessor + LEDs project to get feet wet
   - Deliverable October 16th:
     * Software: rough draft munging short music notes or chords into dots on screen representing LEDs
-    * Hardward: test out microprocessor and bluetooth functionality, and lights if available
+    * x Hardware: test out microprocessor and bluetooth functionality, and lights if available
 
 Week 4
   - continue working making music into dots
