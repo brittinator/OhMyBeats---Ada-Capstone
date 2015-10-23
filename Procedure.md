@@ -48,6 +48,8 @@ The Blend Micro is an Arduino microcontroller that also houses an on-board bluet
 
 * Disconnect all power sources before modifying a circuit.
 
+* You will be putting electricity close to your body and skin, which can cause burns.  Please be careful and cover any exposed wires before trying anything on.
+
 From Adafruit's Neopixel [Uberguide](https://learn.adafruit.com/adafruit-neopixel-uberguide/overview)
 
 
