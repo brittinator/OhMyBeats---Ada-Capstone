@@ -42,7 +42,7 @@ The Blend Micro is an Arduino microcontroller that also houses an on-board bluet
 * Follow this link for how to install the Neopixel Arduino Library [here](https://learn.adafruit.com/adafruit-neopixel-uberguide/arduino-library)
 
 # Step 2
-## Safety !!
+## Safety <img src="https://raw.githubusercontent.com/brittinator/OhMyBeats---Ada-Capstone/master/Images/caution.png" width=100px>
 
 * Polarized capacitors can heat up/burst if installed in the wrong direction. Place the negative side with the ground wire.
 
@@ -74,3 +74,6 @@ To start python notebooks, open up terminal and type `$ipython notebook`.
 `ls /dev/tty.*` in terminal to see what your ports are, then
 
 `screen` and the name of the port, then what your baud rate it, ex: mine was: `screen /dev/tty.usbmodem1411 9600`
+
+
+![schematic](https://raw.githubusercontent.com/brittinator/OhMyBeats---Ada-Capstone/master/Images/Schematic-OhMyBeats.png)
