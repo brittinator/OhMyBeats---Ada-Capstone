@@ -25,10 +25,12 @@ Week 3
     * x Hardware: test out microprocessor and bluetooth functionality, and lights if available
 
 Week 4
-  - continue working making music into dots
   - begin to incorporate LEDs into the mix
   - Deliverable October 23rd:
-    * Ability to show LEDs lighting up when microcontroller directly plugged into laptop (vampiric power)
+    * x Ability to show LEDs lighting up when microcontroller directly plugged into laptop
+    * x Serial communication with LEDs and python program
 
 Week 5 - Final Week
-  - Deliverable October 30th: Final product for demo
+  - Work with bluetooth communcation
+  - Deliverable October 30th:
+    * Final product for demo
