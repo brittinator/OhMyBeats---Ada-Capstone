@@ -4,7 +4,6 @@ import pyaudio # to play audio
 import wave # for opening wavefiles
 import serial # for serial communication
 import time # for timing things/time delays on python side
-# import sys
 # -------------------------------------------------
 def returnSpectrum(y,Fs):
     """
@@ -110,28 +109,33 @@ hz400 = baseFolder +'400hz.wav'
 hz1000 = baseFolder +'1000hz.wav'
 hz3000 = baseFolder +'3000hz.wav'
 drum = baseFolder +'drum.wav'
+light30 = baseFolder + 'light-30s.wav'
+light60 = baseFolder + 'light-1m.wav'
+
 # -------------------------------------------------
 """ Below is where we execute the code to run the fft
 and send the arrays of LEDs to light to the Arduino"""
 
-sampFreq, snd = wavfile.read(drum)
+sampFreq, snd = wavfile.read(boom)
 
+print 'snd: 883200?? ' + str(len(snd))
 duration = len(snd)/sampFreq # in seconds
-second = len(snd)/duration # second translation into file size
-window_size = second/20 # break up snd into chunks
-connection = '/dev/cu.usbmodem1411'
 
-print duration
-print window_size
+second = sampFreq # sampling frequency is = second of data
+total_slices = duration*40 # break up snd into chunks
+window_size = second/40 # want 40 frames per second (fps), so want 40 windows/second
+
+connection = '/dev/cu.usbmodem1411'
 
 ser = serial.Serial(connection, 115200, timeout=1)
 
 #open a wav format music
-f = wave.open(piano,"rb") #rb - read binary
+f = wave.open(boom,"rb") #rb - read binary
+
 #instantiate PyAudio
 p = pyaudio.PyAudio()
 
-# define callback (2)
+# define callback
 def callback(in_data, frame_count, time_info, status):
     data = f.readframes(frame_count)
     return (data, pyaudio.paContinue)
@@ -146,21 +150,20 @@ stream = p.open(format = p.get_format_from_width(f.getsampwidth()),
 stream.start_stream()
 
 numSlices = 0
-time.sleep(.5)
-for i in range(0, len(snd)-(window_size*2), (window_size*2)): # range makes an array auto
+for i in range(0, len(snd)-window_size, (window_size)): # range makes an array auto
     numSlices += 1
     spectrum = returnSpectrum(snd[i:i+window_size], sampFreq)
     array = buckets(spectrum)
     data = formatData(array)
-    print data
     ser.write(data)
-    # time.sleep(1)
+    time.sleep(0.020) # delay of 1/40fps = 0.020
 
+print numSlices
 # wait for stream to finish (5)
 while stream.is_active():
     time.sleep(0.1)
 
-ser.write("000000000000") # turning LEDs off
+ser.write("000000000000") # turn LEDs off
 #stop stream
 stream.stop_stream()
 stream.close()
