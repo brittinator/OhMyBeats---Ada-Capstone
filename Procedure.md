@@ -36,7 +36,7 @@ The Blend Micro is an Arduino microcontroller that also houses an on-board bluet
 * Processing software: Python 2.7.10 :: Anaconda 2.3.0 (x86_64)
   * Install from [python's website](https://www.python.org/downloads/)
   * You also need to install a python library for serial communication between your computer and the arduino. To do this, in your terminal type `pip install pyserial`
-* On-board software: Arduino programming language (based on Wiring), version 1.6.5
+* On-board software: Arduino programming language (based on C/C++), version 1.6.5
   * Install from [Arduino's website](https://www.arduino.cc/en/Guide/HomePage)
 * Follow getting started [manual](http://redbearlab.com/getting-started-blendmicro) on how to get the libraries for the Blend Micro. I followed the [Quickstart with Codebender](http://redbearlab.com/quick-start-codebender) link.  
 * Follow this link for how to install the Neopixel Arduino Library [here](https://learn.adafruit.com/adafruit-neopixel-uberguide/arduino-library)
@@ -63,8 +63,6 @@ From Adafruit's Neopixel [Uberguide](https://learn.adafruit.com/adafruit-neopixe
 * Make sure that your connections are secure. Alligator clips do not make reliable connections to the tiny solder pads on NeoPixel rings. Better to solder a small pigtail wire to the ring and attach the alligator clips to that.
 
 
-
-
 ## Hint
 To troubleshoot my python code, I used _Jupyter_, which is a web application that allows you to modify live code, look at visualizations and and see the errors live.
 To start python notebooks, open up terminal and type `$ipython notebook`.
@@ -76,4 +74,35 @@ To start python notebooks, open up terminal and type `$ipython notebook`.
 `screen` and the name of the port, then what your baud rate it, ex: mine was: `screen /dev/tty.usbmodem1411 9600`
 
 
+# Step 3
+## Prototype Schematic
+
 ![schematic](https://raw.githubusercontent.com/brittinator/OhMyBeats---Ada-Capstone/master/Images/Schematic-OhMyBeats.png)
+
+# Step 4
+## Python Code
+
+In order to ensure the fast fourier transform was performing as expected, I did an intermediate step of graphing the it with known tones/frequencies.
+
+```python
+numPlots = 0
+for i in range(0, len(snd)-window_size, window_size): # range makes an array auto
+    # make a slice per half-second
+    # print snd[i:i+window_size]
+    numPlots += 1
+    transform = returnSpectrum(snd[i:i+window_size], sampFreq)
+    buckets(transform)
+    plotSpectrum(snd[i:i+window_size], sampFreq)
+    #show()
+```
+
+# Step 5
+## Arduino Code   
+```
+#include <Adafruit_NeoPixel.h>
+// programming language: wiring, variant on processing
+
+#define PIN 8
+// To Do: !! figure out timing for data packets for a delay
+unsigned long time;
+```
