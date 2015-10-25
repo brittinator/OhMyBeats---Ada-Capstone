@@ -61,11 +61,11 @@ void LedSwitch() {
 
    // bass
   for(int i=9; i < 19; i++) {
-    for(int j=10; j < 10 + inputArray[1]; j++) {
+    for(int j=9; j < 9 + inputArray[1]; j++) {
       strip.setPixelColor(j, 255, 255, 255);
     }
     // turn off pixels not needed
-    for(int j=10 + inputArray[1]; j < 19; j++) {
+    for(int j=9 + inputArray[1]; j < 19; j++) {
       strip.setPixelColor(j, 0);
     }
   } // end of second section
@@ -81,9 +81,9 @@ void LedSwitch() {
     }
   }  // end of third section
 
-   // mid-tones
+   // mid-tones - 29-39
   for(int i=29; i < 39; i++) {
-    for(int j=30; j < 30 + inputArray[3]; j++) {
+    for(int j=29; j < 29 + inputArray[3]; j++) {
       strip.setPixelColor(j, 255, 150, 0);
     }
     // turn off pixels not needed
