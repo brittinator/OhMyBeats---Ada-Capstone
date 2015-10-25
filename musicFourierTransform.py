@@ -1,3 +1,11 @@
+"""
+This file is meant to feed an Arduino Blend Micro with data.
+A fast fourier transform is performed on an imcoming music file,
+and then subsequentely averaged and normalized to the number of LEDs attached to the Arduino.
+I have 60 (-1, I broke one pixel) neopixels attached and have 6 buckets, so 10 LEDs/bucket.
+I normalize my data from 0-10.
+"""
+# Dependencies/libraries to import
 from scipy import fft, arange
 from scipy.io import wavfile # for chunking sounds into time slices
 import pyaudio # to play audio
@@ -9,14 +17,14 @@ def returnSpectrum(y,Fs):
     """
     Plots a Single-Sided Amplitude Spectrum of y(t)
     y = wavefile in array form
-    Fs = sample rate, probably 44100
+    Fs = sample frequency, sometimes called sampling rate; likely 44100
     """
 
     n = len(y) # length of the signal
     k = arange(n) # array from [0, 1, 2, ... n-1]
     T = n/float(Fs) # need to make Fs a float so T can be 0.xx decimal
 
-    if y.ndim > 1:
+    if y.ndim > 1: # stereo music has more than one dimension for stereo sound
         y = y[:,0] # taking 1st dimension, slice of matrix
 
     frq = k/T # two sides frequency range
@@ -33,7 +41,7 @@ def returnSpectrum(y,Fs):
 
 # -------------------------------------------------
 def averaging(min, max, spectrum):
-    """normalizing buckets - 0 is no leds lit, 10 is all 10 leds in a strip lit"""
+    """normalizing a bucket, returns a number from 0-1"""
     length = 0
     sum = 0
 
@@ -47,49 +55,51 @@ def averaging(min, max, spectrum):
 
 # -------------------------------------------------
 def formatData(array):
-    formatted = ""
+    """takes an array and adds a leading zero
+    then joins all into a string of length 12
+    so we'll consistentely send a chunk of data of length 12 to the Arduino"""
+
     stringArray = []
     for n in array:
-        # convert array into a string
+        # convert number into a string
         numAsString = str(n)
         if len(numAsString) < 2:
             # add leading zeros to numbers
             numAsString = '0' + numAsString
         stringArray.append(numAsString)
 
+    # join array items into a string of length 12
     return ''.join(stringArray)
 
 # -------------------------------------------------
 def buckets(spectrumHash):
     """Mundges data from a huge list of frequency data into 6 distinct buckets"""
-
-    # Sub Bass: 20 to 60 Hz
-    # Bass1: 60 to 150 Hz
-    # Bass2: 150 to 250 Hz
-    # Low Midrange: 250 to 375 Hz
-    # Midrange: 275 to 500 Hz
-    # Treble: 500 Hz to 2 kHz
-
-    subBass = averaging(20, 60, spectrumHash)
-    bass1 = averaging(60, 150, spectrumHash)
-    bass2 = averaging(150, 250, spectrumHash)
-    lowMidrange = averaging(250, 375, spectrumHash)
-    midrange = averaging(385, 500, spectrumHash)
-    treble = averaging(500, 2000, spectrumHash)
-
     equalizer = []
+    normalized = []
+
+    LEDS = 10 # number of leds in each 'frequency bucket'
+    SUBBASS =       [20, 60]            # Sub Bass: 20 to 60 Hz
+    BASS1 =         [60, 150]           # Bass1: 60 to 150 Hz
+    BASS2 =         [150, 250]          # Bass2: 150 to 250 Hz
+    LOWMIDRANGE =   [250, 375]          # Low Midrange: 250 to 375 Hz
+    MIDRANGE =      [375, 500]           # Midrange: 275 to 500 Hz
+    TREBLE =        [500, 2000]        # Treble: 500 Hz to 2 kHz
+
+    subBass =       averaging(SUBBASS[0], SUBBASS[1], spectrumHash)
+    bass1 =         averaging(BASS1[0], BASS1[1], spectrumHash)
+    bass2 =         averaging(BASS2[0], BASS2[1], spectrumHash)
+    lowMidrange =   averaging(LOWMIDRANGE[0], LOWMIDRANGE[1], spectrumHash)
+    midrange =      averaging(MIDRANGE[0], MIDRANGE[1], spectrumHash)
+    treble =        averaging(TREBLE[0], TREBLE[1], spectrumHash)
 
     # normalizing buckets - 0 is no leds lit, 10 is all 10 leds in a strip lit
     beforeNormalization = [subBass, bass1, bass2, lowMidrange, midrange, treble]
     hi = max(beforeNormalization)
     lo = min(beforeNormalization)
 
-    normalized = []
-
     for n in beforeNormalization:
-        norms = int((((n-lo)/(hi-lo)))*10)
+        norms = int((((n-lo)/(hi-lo)))*LEDS)
         normalized.append(norms)
-
     return normalized
 
 # -------------------------------------------------
@@ -111,18 +121,13 @@ hz3000 = baseFolder +'3000hz.wav'
 drum = baseFolder +'drum.wav'
 light30 = baseFolder + 'light-30s.wav'
 light60 = baseFolder + 'light-1m.wav'
-
 # -------------------------------------------------
 """ Below is where we execute the code to run the fft
 and send the arrays of LEDs to light to the Arduino"""
 
-sampFreq, snd = wavfile.read(boom)
-
-print 'snd: 883200?? ' + str(len(snd))
-duration = len(snd)/sampFreq # in seconds
+sampFreq, snd = wavfile.read(light60)
 
 second = sampFreq # sampling frequency is = second of data
-total_slices = duration*40 # break up snd into chunks
 window_size = second/40 # want 40 frames per second (fps), so want 40 windows/second
 
 connection = '/dev/cu.usbmodem1411'
@@ -130,7 +135,7 @@ connection = '/dev/cu.usbmodem1411'
 ser = serial.Serial(connection, 115200, timeout=1)
 
 #open a wav format music
-f = wave.open(boom,"rb") #rb - read binary
+f = wave.open(light60,"rb") #rb - read binary
 
 #instantiate PyAudio
 p = pyaudio.PyAudio()
@@ -158,7 +163,7 @@ for i in range(0, len(snd)-window_size, (window_size)): # range makes an array a
     ser.write(data)
     time.sleep(0.020) # delay of 1/40fps = 0.020
 
-print numSlices
+# print numSlices
 # wait for stream to finish (5)
 while stream.is_active():
     time.sleep(0.1)
