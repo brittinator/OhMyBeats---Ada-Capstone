@@ -11,17 +11,17 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(59, PIN, NEO_GRB + NEO_KHZ800); // 1
 unsigned long time;
 int inputArray[6];  // variable that will house the array of numbers
 char twoBytes[2];
+
+//// Variables for color changing /////
 int incrementor = 0;
 const int high = 100;
 const int med = 50;
 const int low = 20;
 
 void setup() {
-  // void means you will not have a return for this method
   strip.begin();
   strip.show(); // Initialize all pixels to 'off'
-  // start serial port at 115200 baud:
-  Serial.begin(115200);
+  Serial.begin(115200); // start serial port at 115200 baud
 }
 
 void loop() {
@@ -46,76 +46,69 @@ void loop() {
 } // end of void loop
 
 void LedSwitch() {
-  // subBass
+  // subBass, upside down
   for(int i=8; i > -1; i--) { // from 0-8 pixel locale
     for(int j=8; j > 8-inputArray[0]; j--) {
       strip.setPixelColor(j, incrementor, 0, low);
     }
-    // turn off pixels not needed
-    for(int j=8 - inputArray[0]; j > -1; j--) {
-      strip.setPixelColor(j, 0);
-    }
-  } // end of first section
+    pixelOffDown(0); // turn off remainder of pixels if they were on in the previou iteration
+  } // end of 1st
 
    // bass
   for(int i=9; i < 19; i++) {
     for(int j=9; j < 9 + inputArray[1]; j++) {
       strip.setPixelColor(j, incrementor, high, 0);
     }
-    // turn off pixels not needed
-    for(int j=9 + inputArray[1]; j < 19; j++) {
-      strip.setPixelColor(j, 0);
-    }
-  } // end of second section
+    pixelOffUp(1);
+  } // end of 2nd
 
-   // low mid-tones
+   // low mid-tones, upside down
   for(int i=28; i > 18; i--) {
     for(int j=28; j > 28 - inputArray[2]; j--) {
       strip.setPixelColor(j, 0, incrementor, med);
     }
-    // turn off pixels not needed
-    for(int j=28 - inputArray[2]; j > 18; j--) {
-      strip.setPixelColor(j, 0);
-    }
-  }  // end of third section
+    pixelOffDown(2);
+  }  // end of 3rd
 
-   // mid-tones, green
+   // mid-tones
   for(int i=29; i < 39; i++) {
     for(int j=29; j < 29 + inputArray[3]; j++) {
       strip.setPixelColor(j, med, incrementor, 0);
     }
-    // turn off pixels not needed
-    for(int j=29 + inputArray[3]; j < 39; j++) {
-      strip.setPixelColor(j, 0);
-    }
-  }  // end of fourth section
+    pixelOffUp(3);
+  }  // end of 4th
 
-   // high mid-tones
+   // high mid-tones, upside down
   for(int i=48; i > 38; i--) {
     for(int j=48; j > 48 - inputArray[4]; j--) {
       strip.setPixelColor(j, 0, med, incrementor);
     }
-    // turn off pixels not needed
-    for(int j=48-inputArray[4]; j > 38; j--) {
-      strip.setPixelColor(j, 0);
-    }
-  } // end of fifth section
+    pixelOffDown(4);
+  } // end of 5th
 
    // treble
   for(int i=49; i < 59; i++) {
     for(int j=49; j < 50 + inputArray[5]; j++) {
       strip.setPixelColor(j, 0, high, incrementor);
     }
-    // turn off pixels not needed
-    for(int j=49 + inputArray[5]; j < 59; j++) {
-      strip.setPixelColor(j, 0);
-    }
-  } // end of sixth section
+    pixelOffUp(5);
+  } // end of 6th
   
   if(incrementor == 200) {
     incrementor == -1;
   }
-
-  
   incrementor += 1;
+}
+
+
+void pixelOffUp(int num) {
+  for(int j=(10*(num-1))+ 9 + inputArray[num]; j < ((10*num) + 9); j++) {
+      strip.setPixelColor(j, 0);
+    }
+}
+
+void pixelOffDown(int num) {
+ for(int j=((10*num + 8)-inputArray[num]); j > ((10*(num-1)) + 8); j--) {
+      strip.setPixelColor(j, 0);
+    } 
 }

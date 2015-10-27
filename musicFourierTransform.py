@@ -112,7 +112,10 @@ boom = baseFolder +'01 Boom Boom Pow.wav'
 bassNectar = baseFolder +'05 - Lights (Bassnectar Remix).wav'
 aha = baseFolder + '10 Aha!.wav'
 nin = baseFolder + '1-11 La Mer.wav'
+dave = baseFolder + '2-07 Ants Marching.wav'
+white = baseFolder + '01 Seven Nation Army.wav'
 sweep = baseFolder +'sweep20-20k.wav'
+jj = baseFolder + '03 Joints & Jam.wav'
 hz40 = baseFolder +'40hz.wav'
 hz60 = baseFolder +'60hz.wav'
 hz125 = baseFolder +'125hz.wav'
@@ -128,10 +131,10 @@ light60 = baseFolder + 'light-1m.wav'
 """ Below is where we execute the code to run the fft
 and send the arrays of LEDs to light to the Arduino"""
 
-sampFreq, snd = wavfile.read(light30)
+sampFreq, snd = wavfile.read(jj)
 
 second = sampFreq # sampling frequency is = second of data
-fps = 40 # frames per second
+fps = 20 # frames per second
 window_size = second/fps # want 40 frames per second (fps), so want 40 windows/second
 myDelay = 1/float(fps)
 print window_size
@@ -142,7 +145,7 @@ connection = '/dev/cu.usbmodem1411'
 ser = serial.Serial(connection, 115200, timeout=1)
 
 #open a wav format music
-f = wave.open(light30,"rb") #rb - read binary
+f = wave.open(jj,"rb") #rb - read binary
 
 #instantiate PyAudio
 p = pyaudio.PyAudio()
