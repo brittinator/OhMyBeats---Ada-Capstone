@@ -9,8 +9,8 @@ This project is a top hat + LEDs that will display a live-view of music playing 
 ## Materials & Tools
 (All prices in USD)
 * Black Top Hat = $12.00
-* 1 M x Adafruit NeoPixel Digital RGB LED Strip - Black 60 LED (BLACK) [ID:1461] (http://www.adafruit.com/products/1461) = $24.95
-* RedBearLab Blend Micro (http://store.redbearlab.com/products/blendmicro) = $26.90
+* 1 M x Adafruit NeoPixel Digital RGB LED Strip - Black 60 LED (BLACK), ID:1461 [Adafruit Link](http://www.adafruit.com/products/1461) = $24.95
+* RedBearLab Blend Micro [Adafruit Link](http://store.redbearlab.com/products/blendmicro) = $26.90
 * 1 x 74AHCT125 - Quad Level-Shifter (3V to 5V) (74AHCT125) [ID:1787] = $1.50
 * 1 x 4 x AA Battery Holder with On/Off Switch[ID:830] = $2.95
 * 1 x Premium Male/Male Jumper Wires - 20 x 6" (150mm)[ID:1957] = $1.95
@@ -18,7 +18,8 @@ This project is a top hat + LEDs that will display a live-view of music playing 
 $2.00
 * 1 x Male DC Power adapter - 2.1mm plug to screw terminal block[ID:369] =
 $2.00
-* resister
+* Premium Vinyl Twist Connector
+* 330 Ohm resister
 * capacitor
 * cords  
 * solder
@@ -26,7 +27,7 @@ $2.00
 * 4 AA rechargeable batteries
 * 5V battery holder
 * volt meter
-* screw driver
+* drill & bit
 * CATT5 cable to cannibalize cords
 * electrical tape/heat shrink for covering exposed wires
 
@@ -42,7 +43,7 @@ The Blend Micro is an Arduino microcontroller that also houses an on-board bluet
 * On-board software: Arduino programming language (based on C/C++), version 1.6.5
   * Install from [Arduino's website](https://www.arduino.cc/en/Guide/HomePage)
 * Follow getting started [manual](http://redbearlab.com/getting-started-blendmicro) on how to get the libraries for the Blend Micro. I followed the [Quickstart with Codebender](http://redbearlab.com/quick-start-codebender) link.  
-* Follow this link for how to install the Neopixel Arduino Library [here](https://learn.adafruit.com/adafruit-neopixel-uberguide/arduino-library)
+* Follow this link for how to install the Neopixel Arduino Library [here](https://learn.adafruit.com/adafruit-neopixel-uberguide/arduino-library).
 
 # Step 2
 ## Safety <img src="https://raw.githubusercontent.com/brittinator/OhMyBeats---Ada-Capstone/master/Images/caution.png" width=100px>
@@ -66,23 +67,12 @@ From Adafruit's Neopixel [Uberguide](https://learn.adafruit.com/adafruit-neopixe
 * Make sure that your connections are secure. Alligator clips do not make reliable connections to the tiny solder pads on NeoPixel rings. Better to solder a small pigtail wire to the ring and attach the alligator clips to that.
 
 
-## Hint
-To troubleshoot my python code, I used _Jupyter_, which is a web application that allows you to modify live code, look at visualizations and and see the errors live.
-To start python notebooks, open up terminal and type `$ipython notebook`.
-
-
-
-`ls /dev/tty.*` in terminal to see what your ports are, then
-
-`screen` and the name of the port, then what your baud rate it, ex: mine was: `screen /dev/tty.usbmodem1411 9600`
-
-
 # Step 3
 ## Prototype Schematic
-* I attached my components with a breadboard (no soldering necessary) as a first step.
+* I attached my components using a breadboard (no soldering necessary) as a first step.
 
 *  Run the 'strandtest' that comes with the Neopixel library to make sure the Aruino is communicating with your neopixels. Open the Arduino program, and navigate to:
-`file -> examples -> Adafruit Neopixels -> strandtest`
+`file -> examples -> Adafruit Neopixels -> strandtest`.  This will run through 5 different programs.
 
 
 ![schematic](https://raw.githubusercontent.com/brittinator/OhMyBeats---Ada-Capstone/master/Images/Schematic-OhMyBeats.png)
@@ -92,9 +82,9 @@ To start python notebooks, open up terminal and type `$ipython notebook`.
 
 My python code is in my GitHub repo [here](https://github.com/brittinator/OhMyBeats---Ada-Capstone/blob/master/musicFourierTransform.py).
 
-The code below is doing all the heavy lifting of playing the music, and manipulating it into frequency numbers. It takes a wave file, performs a fast fourier transform, averages the results, and then normalizes the data to fit the number of LEDs the hat has.
+The code below is doing all the heavy lifting of playing the music, and manipulating it into frequencies. It takes a wave file, performs a fast fourier transform, averages the results, and then normalizes the data to fit the number of LEDs the hat has.
 
-The last steps this code does is send a string of 12 numbers to the Arduino, then sends a signal to turn off the LEDs.
+The final steps are to send a string of 12 numbers to the Arduino, and at the end of the sound file a signal to turn off the LEDs.
 
 ```python
 """
@@ -270,9 +260,9 @@ p.terminate()
 
 # Step 5
 ## Arduino Code
-My Arduino code is also on Github [here](https://github.com/brittinator/OhMyBeats---Ada-Capstone/blob/master/musicalLeds/musicalLeds.ino).
+My Arduino code is on Github [here](https://github.com/brittinator/OhMyBeats---Ada-Capstone/blob/master/musicalLeds/musicalLeds.ino).
 
-This code is written in Arduino's language and (I've been told) is similar to Java and C++. The whole Arduino interface is built upon loops, so you'll see a bunch of those in the following code.  It's purpose is to control the LEDs on the hat. It will be receiving a string of 12 characters long from the computer.
+This code is written in Arduino's language which in based on C++. The whole Arduino interface is built upon loops, so you'll see a bunch of those in the following code.  It's purpose is to control the LEDs on the hat. It will be receiving a string of 12 characters long from the computer.
 
 ```
 #include <Adafruit_NeoPixel.h>
@@ -399,18 +389,24 @@ void LedSwitch() {
 
 * Before this step, I would make sure both programs above are behaving properly.  It is easier to debug the whole thing in prototype stage rather than trying to determine if the problem is wiring vs. code not functioning.
 
-* Test our your soldering techniques on some wire or components you won't need before jumping into soldering the crucial parts.
-
 * I've used green wire for the data, red/orange wire for power, and black for the ground.
 
 * Turn off/unplug your power sources while soldering.
 
-* Cut the Neopixels in the middle of the three copper oblongs.  These are what you'll be soldering to.  I cut too much on one side on the first cut, so I had toss that LED and adjust my code for 59 pixels instead of 60.
+1. Test our your soldering techniques on some wire or components you won't need before jumping into soldering the crucial parts.
 
-This is where you'll solder your pieces together.  If you have a volt meter, now is the time to use it.  
+2. Cut the Neopixels in the middle of the three copper oblongs.  These are what you'll be soldering to.  I cut too much on one side on the first cut, so I had toss that LED and adjust my code for 59 pixels instead of 60.
 
-I soldered bits at a time, and when I got the battery pack soldered to the arduino and the first set of LEDs, I downloaded the strandtest that comes with the neopixel example library, and powered on the LEDs. You should see them light up, and if not check your connections before moving on. Also feel free to use your volt meter.
+3. This is where you'll solder your pieces together.  If you have a volt meter, now is the time to use it to check if your components are getting power.
 
-I repeated this process with each new LED strand I connected.
+4. I soldered bits at a time, and when I got the battery pack soldered to the arduino and the first set of LEDs, I downloaded the strandtest that comes with the neopixel example library, and powered on the LEDs. You should see them light up, and if not check your connections before moving on. Also feel free to use your volt meter.
 
-I drilled holes on the top and bottom of the front panel of the hat. This is where the wires will thread through, and also helps secure the LEDs. When you are finished, use shrink wrap or electrical tape to protect yourself from any exposed wires. This will also help decrease oxidation of the wires, which will make your project last longer.
+5. I repeated this process with each new LED strand I connected.
+
+6. I drilled holes on the top and bottom of the front panel of the hat. This is where the wires will thread through, and also helps secure the LEDs.
+
+7. When you are finished, use shrink wrap or electrical tape to protect yourself from any exposed wires. This will also help decrease oxidation of the wires, which will make your project last longer.
+
+8. Make a housing at the top of the hat to protect your wires from detaching to components. I used cardboard and rubber bands. Secure this to the hat.
+
+9. My top hat was to large for me, so I added some padding around the bottom.
