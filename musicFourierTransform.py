@@ -4,6 +4,7 @@ A fast fourier transform is performed on an imcoming music file,
 and then subsequentely averaged and normalized to the number of LEDs attached to the Arduino.
 I have 60 (-1, I broke one pixel) neopixels attached and have 6 buckets, so 10 LEDs/bucket.
 I normalize my data from 0-10.
+Created by Brittany L. Walentin October 2015
 """
 # Dependencies/libraries to import
 from scipy import fft, arange
@@ -77,13 +78,13 @@ def buckets(spectrumHash):
     equalizer = []
     normalized = []
 
-    LEDS = 10 # number of leds in each 'frequency bucket'
-    SUBBASS =       [20, 60]            # Sub Bass: 20 to 60 Hz
-    BASS1 =         [60, 150]           # Bass1: 60 to 150 Hz
-    BASS2 =         [150, 250]          # Bass2: 150 to 250 Hz
-    LOWMIDRANGE =   [250, 375]          # Low Midrange: 250 to 375 Hz
-    MIDRANGE =      [375, 500]           # Midrange: 275 to 500 Hz
-    TREBLE =        [500, 2000]        # Treble: 500 Hz to 2 kHz
+    LEDS = 10 # scaling factor, number of leds in each 'frequency bucket'
+    SUBBASS =       [50, 100]            # Sub Bass: 50 to 100 Hz
+    BASS1 =         [100, 250]           # Bass1: 100 to 250 Hz
+    BASS2 =         [250, 300]          # Bass2: 250 to 300 Hz
+    LOWMIDRANGE =   [300, 400]          # Low Midrange: 300 to 400 Hz
+    MIDRANGE =      [400, 500]           # Midrange: 400 to 500 Hz
+    TREBLE =        [500, 1500]        # Treble: 500 Hz to 1.5 kHz
 
     subBass =       averaging(SUBBASS[0], SUBBASS[1], spectrumHash)
     bass1 =         averaging(BASS1[0], BASS1[1], spectrumHash)
@@ -109,6 +110,8 @@ rock = baseFolder +'rockinthefreeworld.wav'
 piano = baseFolder +'piano2.wav'
 boom = baseFolder +'01 Boom Boom Pow.wav'
 bassNectar = baseFolder +'05 - Lights (Bassnectar Remix).wav'
+aha = baseFolder + '10 Aha!.wav'
+nin = baseFolder + '1-11 La Mer.wav'
 sweep = baseFolder +'sweep20-20k.wav'
 hz40 = baseFolder +'40hz.wav'
 hz60 = baseFolder +'60hz.wav'
@@ -125,17 +128,21 @@ light60 = baseFolder + 'light-1m.wav'
 """ Below is where we execute the code to run the fft
 and send the arrays of LEDs to light to the Arduino"""
 
-sampFreq, snd = wavfile.read(light60)
+sampFreq, snd = wavfile.read(light30)
 
 second = sampFreq # sampling frequency is = second of data
-window_size = second/40 # want 40 frames per second (fps), so want 40 windows/second
+fps = 40 # frames per second
+window_size = second/fps # want 40 frames per second (fps), so want 40 windows/second
+myDelay = 1/float(fps)
+print window_size
+print myDelay
 
 connection = '/dev/cu.usbmodem1411'
 
 ser = serial.Serial(connection, 115200, timeout=1)
 
 #open a wav format music
-f = wave.open(light60,"rb") #rb - read binary
+f = wave.open(light30,"rb") #rb - read binary
 
 #instantiate PyAudio
 p = pyaudio.PyAudio()
@@ -163,7 +170,7 @@ for i in range(0, len(snd)-window_size, (window_size)): # range makes an array a
     ser.write(data)
     time.sleep(0.020) # delay of 1/40fps = 0.020
 
-# print numSlices
+print numSlices
 # wait for stream to finish (5)
 while stream.is_active():
     time.sleep(0.1)
