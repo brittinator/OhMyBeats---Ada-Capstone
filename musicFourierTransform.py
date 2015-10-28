@@ -114,6 +114,7 @@ aha = baseFolder + '10 Aha!.wav'
 nin = baseFolder + '1-11 La Mer.wav'
 dave = baseFolder + '2-07 Ants Marching.wav'
 white = baseFolder + '01 Seven Nation Army.wav'
+white30 = baseFolder + '01 Seven Nation Army_30.wav'
 sweep = baseFolder +'sweep20-20k.wav'
 jj = baseFolder + '03 Joints & Jam.wav'
 hz40 = baseFolder +'40hz.wav'
@@ -131,21 +132,21 @@ light60 = baseFolder + 'light-1m.wav'
 """ Below is where we execute the code to run the fft
 and send the arrays of LEDs to light to the Arduino"""
 
-sampFreq, snd = wavfile.read(jj)
+sampFreq, snd = wavfile.read(light30)
 
 second = sampFreq # sampling frequency is = second of data
-fps = 20 # frames per second
+fps = 40 # frames per second
 window_size = second/fps # want 40 frames per second (fps), so want 40 windows/second
-myDelay = 1/float(fps)
-print window_size
-print myDelay
-
+# duration = len(snd)/sampFreq # in seconds
+# delay = duration/30
+# myDelay = 1/float(fps) - float(delay*0.005)
+# too keep things in sync, need to subtract 0.005 s from the delay every 30 seconds
 connection = '/dev/cu.usbmodem1411'
 
 ser = serial.Serial(connection, 115200, timeout=1)
 
 #open a wav format music
-f = wave.open(jj,"rb") #rb - read binary
+f = wave.open(light30,"rb") #rb - read binary
 
 #instantiate PyAudio
 p = pyaudio.PyAudio()
@@ -171,14 +172,19 @@ for i in range(0, len(snd)-window_size, (window_size)): # range makes an array a
     array = buckets(spectrum)
     data = formatData(array)
     ser.write(data)
-    time.sleep(0.020) # delay of 1/40fps = 0.020
+    time.sleep(0.020) # delay of 1/40fps
 
-print numSlices
-# wait for stream to finish (5)
+# print numSlices
+
 while stream.is_active():
     time.sleep(0.1)
 
+# 3.times do
+ser.write("000000000000") #  turn LEDs off
 ser.write("000000000000") # turn LEDs off
+ser.write("000000000000") #  turn LEDs off
+
+# end
 #stop stream
 stream.stop_stream()
 stream.close()
