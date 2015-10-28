@@ -2,21 +2,64 @@
 // https://github.com/brittinator/OhMyBeats---Ada-Capstone/blob/master/musicFourierTransform.py.
 // It's purpose is to control LEDs on the hat. It will be receiving a string of 12 characters long from the computer.
 // Brittany L. Walentin October 2015
-#include <Adafruit_NeoPixel.h>
 
+#include <Adafruit_NeoPixel.h>
 #define PIN 8
 
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(59, PIN, NEO_GRB + NEO_KHZ800); // 1 LED was given as tribute to the soldering gods
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(59, PIN, NEO_GRB + NEO_KHZ800); // I broke 1 LED
 
-unsigned long time;
+// below is an array of each LED's location, in order starting from the beginning to the end
+int LED[6][10] = { 
+  {100,8,7,6,5,4,3,2,1,0},
+  {9,10,11,12,13,14,15,16,17,18},
+  {28,27,26,25,24,23,22,21,20,19},
+  {29,30,31,32,33,34,35,36,37,38},
+  {48,47,46,45,44,43,42,41,40,39},
+  {49,50,51,52,53,54,55,56,57,58}
+};
+
+//unsigned long time;
 int inputArray[6];  // variable that will house the array of numbers
 char twoBytes[2];
 
-//// Variables for color changing /////
-int incrementor = 0;
-const int high = 100;
-const int med = 50;
-const int low = 20;
+/// arrays that house the last two iterations of LEDs, for color fading
+int minusOne[6]; // n-1 array
+int minusTwo[6]; // n-2 array
+
+// colors
+// {255,0,0}, // red
+// {255,116,0}, //orange
+// {255,253,0}, // yellow
+// {0,255,0}, // green
+// {0,0,255}, // blue
+// {134, 2, 171} // purple
+ 
+int PRIMARY[6][3] = {
+ {255,0,0}, // red
+ {255,116,0}, //orange
+ {255,253,0}, // yellow
+ {0,255,0}, // green
+ {0,0,255}, // blue
+ {134, 2, 171} // purple
+};
+
+int SECONDARY[6][3] = {
+  {0,10,10},
+  {0,10,10},
+  {0,10,10},
+  {0,10,10},
+  {0,10,10},
+  {0,10,10}
+};
+
+int TERNARY[6][3] = {
+  {13,0,17},
+  {13,0,17},
+  {13,0,17},
+  {13,0,17},
+  {13,0,17},
+  {13,0,17}
+};
 
 void setup() {
   strip.begin();
@@ -39,76 +82,55 @@ void loop() {
   } // end of while
 
   if (wrote) {
-    // display pixels!
-    LedSwitch();
+    LedSwitch();  // display pixels!
+    if(isOff() == true) {
+      turnAllOff;
+    }
     strip.show();
   }
 } // end of void loop
 
+
 void LedSwitch() {
-  // subBass, upside down
-  for(int i=8; i > -1; i--) { // from 0-8 pixel locale
-    for(int j=8; j > 8-inputArray[0]; j--) {
-      strip.setPixelColor(j, incrementor, 0, low);
+  for(int i=0; i < 6; i++) { // bucket index
+    for(int n=0; n < 10; n++) { // quantity of LEDs
+      if(n < inputArray[i]) {
+        strip.setPixelColor(LED[i][n], PRIMARY[i][0], PRIMARY[i][1], PRIMARY[i][2]);        
+      } 
+      else if(n < minusOne[i]) {
+        strip.setPixelColor(LED[i][n], SECONDARY[i][0], SECONDARY[i][1], SECONDARY[i][2]);
+      }
+      else if(n < minusTwo[i]) {
+        strip.setPixelColor(LED[i][n], TERNARY[i][0], TERNARY[i][1], TERNARY[i][2]);
+      }
+      else {
+        strip.setPixelColor(LED[i][n], strip.Color(0,0,0));
+      }
     }
-    pixelOffDown(0); // turn off remainder of pixels if they were on in the previou iteration
-  } // end of 1st
-
-   // bass
-  for(int i=9; i < 19; i++) {
-    for(int j=9; j < 9 + inputArray[1]; j++) {
-      strip.setPixelColor(j, incrementor, high, 0);
-    }
-    pixelOffUp(1);
-  } // end of 2nd
-
-   // low mid-tones, upside down
-  for(int i=28; i > 18; i--) {
-    for(int j=28; j > 28 - inputArray[2]; j--) {
-      strip.setPixelColor(j, 0, incrementor, med);
-    }
-    pixelOffDown(2);
-  }  // end of 3rd
-
-   // mid-tones
-  for(int i=29; i < 39; i++) {
-    for(int j=29; j < 29 + inputArray[3]; j++) {
-      strip.setPixelColor(j, med, incrementor, 0);
-    }
-    pixelOffUp(3);
-  }  // end of 4th
-
-   // high mid-tones, upside down
-  for(int i=48; i > 38; i--) {
-    for(int j=48; j > 48 - inputArray[4]; j--) {
-      strip.setPixelColor(j, 0, med, incrementor);
-    }
-    pixelOffDown(4);
-  } // end of 5th
-
-   // treble
-  for(int i=49; i < 59; i++) {
-    for(int j=49; j < 50 + inputArray[5]; j++) {
-      strip.setPixelColor(j, 0, high, incrementor);
-    }
-    pixelOffUp(5);
-  } // end of 6th
-  
-  if(incrementor == 200) {
-    incrementor == -1;
   }
-  incrementor += 1;
-}
 
+  //  set minusTwo array equal to minusOne
+  memcpy( minusTwo, minusOne, 12 );
+  //  set minusOne array equal to inputArray
+  memcpy( minusOne, inputArray, 12 ); // 12 is number of bits to put into array, not array size!!
+}  
 
-void pixelOffUp(int num) {
-  for(int j=(10*(num-1))+ 9 + inputArray[num]; j < ((10*num) + 9); j++) {
-      strip.setPixelColor(j, 0);
+boolean isOff() {
+  for(int i = 0; i < 6; i++) {  
+    if(inputArray[i] == 0) {
+      return true;
     }
+    else { return false; }
+  }
 }
 
-void pixelOffDown(int num) {
- for(int j=((10*num + 8)-inputArray[num]); j > ((10*(num-1)) + 8); j--) {
-      strip.setPixelColor(j, 0);
-    } 
+void turnAllOff() {
+  int off[6] = {0,0,0,0,0,0};
+  for(int i = 0; i < 60; i++) {
+    memcpy(minusOne, off, 6);
+    memcpy(minusTwo, off, 6);
+    strip.setPixelColor(i, 0);
+  }
+  strip.setPixelColor(8, 255,255,255);
 }
+
