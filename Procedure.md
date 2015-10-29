@@ -24,13 +24,18 @@ $2.00
 * cords  
 * solder
 * solder gun
+* soldering station with helping hands
 * 4 AA rechargeable batteries
 * 5V battery holder
 * volt meter
-* drill & bit
+* tiny flathead screqdriver for power adaptor screws
+* drill & bit (bit big enough to fit three cords through)
 * CATT5 cable to cannibalize cords
 * wire stripper
 * electrical tape/heat shrink for covering exposed wires
+* cardboard
+* rubber bands
+* hot glue
 
 NeoPixels are Adafruit's house brand of Red Green Blue (RGB) LEDs (Light Emitting Diodes) that are also addressable.  This means the pixels know their location, which makes programming what you want to display a little easier.
 
@@ -271,119 +276,140 @@ My Arduino code is on Github [here](https://github.com/brittinator/OhMyBeats---A
 This code is written in Arduino's language which in based on C++. The whole Arduino interface is built upon loops, so you'll see a bunch of those in the following code.  It's purpose is to control the LEDs on the hat. It will be receiving a string of 12 characters long from the computer.
 
 ```
+// This code is meant to be paired with my fft code in python found at
+// https://github.com/brittinator/OhMyBeats---Ada-Capstone/blob/master/musicFourierTransform.py.
+// This code's purpose is to control LEDs on the hat. It will be receiving a string of 12 characters long from the computer.
+// Brittany L. Walentin October 2015
+
 #include <Adafruit_NeoPixel.h>
-// programming language: wiring, variant on processing
+#define PIN 8
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(59, PIN, NEO_GRB + NEO_KHZ800); // I broke 1 LED
 
-#define PIN 8 // the pin the LED string is attached to.
-unsigned long time;
+// below is an array of each LED's location, in order starting from beginning to the end
+int LED[6][10] = {
+  {1000,8,7,6,5,4,3,2,1,0}, // 1000 is a placeholder for the LED I broke; does nothing
+  {9,10,11,12,13,14,15,16,17,18},
+  {28,27,26,25,24,23,22,21,20,19},
+  {29,30,31,32,33,34,35,36,37,38},
+  {48,47,46,45,44,43,42,41,40,39},
+  {49,50,51,52,53,54,55,56,57,58}
+};
 
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(59, PIN, NEO_GRB + NEO_KHZ800);
-// 1 LED was given as tribute to the soldering gods
-int BUCKET = 10; // size of each equalizer bar, currently not used
 int inputArray[6];  // variable that will house the array of numbers
-char twoBytes[2];
-int incrementor = 0;
+/// arrays that house the last two iterations of LEDs, for color fading //////////
+int minusOne[6]; // n-1 array
+int minusTwo[6]; // n-2 array
+char twoBytes[2]; // temporary slot for 2 characters at a time, i.e. "0" + "7"
+
+////////////////////  colors   //////////////////////////////////////////////////
+// {255,0,0}, // red
+// {255,116,0}, //orange
+// {255,253,0}, // yellow
+// {0,255,0}, // green
+// {0,0,255}, // blue
+// {134, 2, 171} // purple
+
+int PRIMARY[6][3] = {
+ {255,0,0}, // red
+ {205,116,0}, //orange
+ {155,153,0}, // yellow
+ {0,255,0}, // green
+ {0,0,255}, // blue
+ {134, 2, 171} // purple
+};
+
+int SECONDARY[6][3] = {
+  {0,10,10}, // light blue
+  {0,10,10},
+  {0,10,10},
+  {0,10,10},
+  {0,10,10},
+  {0,10,10}
+};
+
+int TERNARY[6][3] = {
+  {13,0,17}, // purple
+  {13,0,17},
+  {13,0,17},
+  {13,0,17},
+  {13,0,17},
+  {13,0,17}
+};
+////////////////////////////////////////////////////////////////////////
 
 void setup() {
-  // void means you will not have a return for this method
   strip.begin();
   strip.show(); // Initialize all pixels to 'off'
-  // start serial port at 115200 baud:
-  Serial.begin(115200);
-} // end of setup
+  Serial.begin(115200); // serial port set to 115200 baud
+}
 
 void loop() {
   bool wrote = false;
 
-  // if we get a valid byte, read analog int:
+  // if we get a valid byte, read it
   while (Serial.available() > 0) {
     // get incoming byte
     for (int i = 0; i < 6; i++) {
       Serial.readBytes(twoBytes, 2); // buffer is twoBytes, of length 2
-      inputArray[i] = String(twoBytes).toInt(); // re-casting character array into a 1. string, then 2. integer
+      // re-casting character array into a 1. string, then 2. integer
+      inputArray[i] = String(twoBytes).toInt();
     }
 
     wrote = true;
   } // end of while
 
   if (wrote) {
-    // display pixels!
     LedSwitch();
+//    if(isOff()) {
+//      turnAllOff();
+//    }
     strip.show();
   }
 } // end of void loop
 
 void LedSwitch() {
-  // subBass red
-  for(int i=8; i > -1; i--) { // from 0-8 pixel locale
-    for(int j=8; j > 8-inputArray[0]; j--) {
-      strip.setPixelColor(j, 255, 0, incrementor);
+  // turns LEDs on/off based on inputArray, minusOne array and minusTwo array
+  for(int i=0; i < 6; i++) { // frequency buckets
+    for(int n=0; n < 10; n++) { // quantity of LEDs in each bucket
+      if(n < inputArray[i]) {
+        // if the number of LED it's on is inside the input array, turn on the LED at this location
+        strip.setPixelColor(LED[i][n], PRIMARY[i][0], PRIMARY[i][1], PRIMARY[i][2]);        
+      }
+      else if(n < minusOne[i]) {
+        strip.setPixelColor(LED[i][n], SECONDARY[i][0], SECONDARY[i][1], SECONDARY[i][2]);
+      }
+      else if(n < minusTwo[i]) {
+        strip.setPixelColor(LED[i][n], TERNARY[i][0], TERNARY[i][1], TERNARY[i][2]);
+      }
+      else {
+        strip.setPixelColor(LED[i][n], strip.Color(0,0,0));
+      }
     }
-    // turn off pixels not needed
-    for(int j=8 - inputArray[0]; j > -1; j--) {
-      strip.setPixelColor(j, 0);
-    }
-  } // end of first section
-
-   // bass orange
-  for(int i=9; i < 19; i++) {
-    for(int j=9; j < 9 + inputArray[1]; j++) {
-      strip.setPixelColor(j, 200, incrementor, 0);
-    }
-    // turn off pixels not needed
-    for(int j=9 + inputArray[1]; j < 19; j++) {
-      strip.setPixelColor(j, 0);
-    }
-  } // end of second section
-
-   // low mid-tones, upside down, yellow
-  for(int i=28; i > 18; i--) {
-    for(int j=28; j > 28 - inputArray[2]; j--) {
-      strip.setPixelColor(j, 255, incrementor, 0);
-    }
-    // turn off pixels not needed
-    for(int j=28 - inputArray[2]; j > 18; j--) {
-      strip.setPixelColor(j, 0);
-    }
-  }  // end of third section
-
-   // mid-tones, green
-  for(int i=29; i < 39; i++) {
-    for(int j=29; j < 29 + inputArray[3]; j++) {
-      strip.setPixelColor(j, incrementor, 255, 0);
-    }
-    // turn off pixels not needed
-    for(int j=29 + inputArray[3]; j < 39; j++) {
-      strip.setPixelColor(j, 0);
-    }
-  }  // end of fourth section
-
-   // high mid-tones, blue
-  for(int i=48; i > 38; i--) {
-    for(int j=48; j > 48 - inputArray[4]; j--) {
-      strip.setPixelColor(j, incrementor, 0, 255);
-    }
-    // turn off pixels not needed
-    for(int j=48-inputArray[4]; j > 38; j--) {
-      strip.setPixelColor(j, 0);
-    }
-  } // end of fifth section
-
-   // treble, violet
-  for(int i=49; i < 59; i++) {
-    for(int j=49; j < 50 + inputArray[5]; j++) {
-      strip.setPixelColor(j, incrementor, 0, 255);
-    }
-    // turn off pixels not needed
-    for(int j=49 + inputArray[5]; j < 59; j++) {
-      strip.setPixelColor(j, 0);
-    }
-  } // end of sixth section
-  if(incrementor == 200) {
-    incrementor == -1;
   }
-  incrementor += 1;
+
+  //  set minusTwo array equal to minusOne's contents
+  memcpy( minusTwo, minusOne, 12 );
+  //  set minusOne array equal to inputArray's contents
+  memcpy( minusOne, inputArray, 12 ); // 12 is number of bits to put into array, not array size!!
+}  
+
+boolean isOff() {
+  // checks to see if inputArray contains all zeros, a signature that song is finished
+  boolean isOff = true;
+  for(int i = 0; i < 6; i++) {  
+    if(!inputArray[i] == 0) {
+      isOff = false;
+    }
+  }
+  return isOff;
 }
+
+void turnAllOff() {
+  for(int i = 0; i < 60; i++) {
+    strip.setPixelColor(i, strip.Color(0,0,0));
+  }
+}
+
 
 ```
 * At this point I would load in a few test sound files with known frequencies. You should be able to see a certain bucket light up for that freqency. For example, if you run the 60-hz.wav file, you should ony see the first 10 LEDs light up for the duration of the sound file because this bucket encompasses frequencies from 20-60 Hertz.
@@ -393,26 +419,46 @@ void LedSwitch() {
 # Step 5
 ## Hat Construction
 
+### Tips
 * Before this step, I would make sure both programs above are behaving properly.  It is easier to debug the whole thing in prototype stage rather than trying to determine if the problem is wiring vs. code not functioning.
 
-* I've used green wire for the data, red/orange wire for power, and black for the ground.
+* I cannabilized a CATT5 cable for my cords. I've used green wire for the data, red/orange wire for power, and black for the ground.
 
 * Turn off/unplug your power sources while soldering.
 
+### Construction
 1. Test our your soldering techniques on some wire or components you won't need before jumping into soldering the crucial parts.
 
-2. Cut the Neopixels in the middle of the three copper oblongs.  These are what you'll be soldering to.  I cut too much on one side on the first cut, so I had toss that LED and adjust my code for 59 pixels instead of 60.
+1. Cut the Neopixels in the middle of the three copper oblongs.  These are what you'll be soldering to.  I cut too much on one side on the first cut, so I had toss that LED and adjust my code for 59 pixels instead of 60.
+<img src="https://raw.githubusercontent.com/brittinator/OhMyBeats---Ada-Capstone/master/Images/construction/cut.png">
+You should end up with 6 equal strips of neopixels. <img src="https://raw.githubusercontent.com/brittinator/OhMyBeats---Ada-Capstone/master/Images/construction/strips.jpg">
 
-3. This is where you'll solder your pieces together.  If you have a volt meter, now is the time to use it to check if your components are getting power.
+1. I plotted out where I wanted my LED strips to go onto my hat using pins. Mark where the top and bottom of the LEDs will be, as this is where your wires will go. <img src="https://raw.githubusercontent.com/brittinator/OhMyBeats---Ada-Capstone/master/Images/construction/hatwithled.jpg">
 
-4. I soldered bits at a time, and when I got the battery pack soldered to the arduino and the first set of LEDs, I downloaded the strandtest that comes with the neopixel example library, and powered on the LEDs. You should see them light up, and if not check your connections before moving on. Also feel free to use your volt meter.
+1. Solder the wires onto the Blend Micro.  Black wires into the GND holes, red wire into the V33 hole, and green wire into pin 8. <img src="https://raw.githubusercontent.com/brittinator/OhMyBeats---Ada-Capstone/master/Images/construction/blend-final.jpg">
 
-5. I repeated this process with each new LED strand I connected.
+1. Use wire stripper to strip a portion of your wires. Tin the ends of the wires so it'll be easier to solder the wires to the LEDs. Also tin the copper strips on the ends of the LEDs, making sure to keep the strips separate. <img src="https://raw.githubusercontent.com/brittinator/OhMyBeats---Ada-Capstone/master/Images/construction/solderingpixel.jpg">
 
-6. I drilled holes on the top and bottom of the front panel of the hat. This is where the wires will thread through, and also helps secure the LEDs.
+1. I drilled holes on the top and bottom of the front panel of the hat. This is where the wires will thread through, and also helps secure the LEDs in place.
 
-7. When you are finished, use shrink wrap or electrical tape to protect yourself from any exposed wires. This will also help decrease oxidation of the wires, which will make your project last longer.
+1. Make sure the wires you cut are long enough to go through your holes by pushing them into the holes.  Put the wires into the holes using a snake-like pattern.  I used clips to secure the wires so they didn't fall out of the holes. <img src="https://raw.githubusercontent.com/brittinator/OhMyBeats---Ada-Capstone/master/Images/construction/snakefinal.jpg">
 
-8. Make a housing at the top of the hat to protect your wires from detaching to components. I used cardboard and rubber bands. Secure this to the hat.
+1. The next step is soldering your pieces together.  I soldered bits at a time, and when I got the battery pack soldered to the arduino I checked to make sure it was getting power using the volt meter. When you are doing this, make sure any stray ground and power cords are not touching each other!
 
-9. My top hat was to large for me, so I added some padding around the bottom.
+Then when I soldered the first set of LEDs, I downloaded the `strandtest` that comes with the neopixel example library, and powered on the LEDs. You should see them light up, and if not check your connections before moving on.
+
+Troubleshooting: If you've checked your connections and still have no LEDs lit, load the `blink` test and make sure the onboard LED on the arduino is blinking.  You can find this in `file -> examples -> 01. basics -> blink`
+
+1. I repeat the process of soldering a new LED strand, and then turning power on to see if the LEDs are properly connected.
+
+1. When you are finished and have tested all LEDs, use shrink wrap or electrical tape to protect yourself from any exposed wires. This will also help decrease oxidation of the wires, which will make your project last longer.
+
+1. Optional: Make a housing at the top of the hat to protect your wires from detaching to components. I used cardboard and rubber bands. This would be a perfect time to use a circuit board, but I was running short on time. Secure this to the hat.
+
+1. Trace around your hat onto a piece of cardboard to make your secret hatch. Cut around this, only slightly larger than your tracing.
+
+1. Hot glue a piece of fabric to the cardboard to make it look a little better.
+
+1. Drill a hole on one side of the cardboard/fabric, and place a piece of yarn/twist tie/cut rubber band as a holder to open/close it.
+
+1. My top hat was to large for me, so I added some padding around the bottom.
