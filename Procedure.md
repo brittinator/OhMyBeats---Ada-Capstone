@@ -29,6 +29,7 @@ $2.00
 * volt meter
 * drill & bit
 * CATT5 cable to cannibalize cords
+* wire stripper
 * electrical tape/heat shrink for covering exposed wires
 
 NeoPixels are Adafruit's house brand of Red Green Blue (RGB) LEDs (Light Emitting Diodes) that are also addressable.  This means the pixels know their location, which makes programming what you want to display a little easier.
@@ -41,10 +42,10 @@ The Blend Micro is an Arduino microcontroller that also houses an on-board bluet
   * Install from [python's website](https://www.python.org/downloads/)
   * You also need to install a python library for serial communication between your computer and the arduino. To do this, in your terminal type `pip install pyserial`
 * use `pip list` to get a list of the python libraries you have installed on your system
-* Python Sounddevice [website](http://python-sounddevice.readthedocs.org/en/0.2.2/#simultaneous-playback-and-recording)
+<!-- * Python Sounddevice [website](http://python-sounddevice.readthedocs.org/en/0.2.2/#simultaneous-playback-and-recording)
   * `pip install cffi --user`
   * `pip install sounddevice --user`
-  * 'brew install portaudio` to install PortAudio
+  * 'brew install portaudio` to install PortAudio -->
 * On-board software: Arduino programming language (based on C/C++), version 1.6.5
   * Install from [Arduino's website](https://www.arduino.cc/en/Guide/HomePage)
 * Follow getting started [manual](http://redbearlab.com/getting-started-blendmicro) on how to get the libraries for the Blend Micro. I followed the [Quickstart with Codebender](http://redbearlab.com/quick-start-codebender) link.  
