@@ -100,6 +100,7 @@ A fast fourier transform is performed on an imcoming music file,
 and then subsequentely averaged and normalized to the number of LEDs attached to the Arduino.
 I have 60 (-1, I broke one pixel) neopixels attached and have 6 buckets, so 10 LEDs/bucket.
 I normalize my data from 0-10.
+Created by Brittany L. Walentin October 2015
 """
 # Dependencies/libraries to import
 from scipy import fft, arange
@@ -173,13 +174,13 @@ def buckets(spectrumHash):
     equalizer = []
     normalized = []
 
-    LEDS = 10 # number of leds in each 'frequency bucket'
-    SUBBASS =       [20, 60]            # Sub Bass: 20 to 60 Hz
-    BASS1 =         [60, 150]           # Bass1: 60 to 150 Hz
-    BASS2 =         [150, 250]          # Bass2: 150 to 250 Hz
-    LOWMIDRANGE =   [250, 375]          # Low Midrange: 250 to 375 Hz
-    MIDRANGE =      [375, 500]           # Midrange: 275 to 500 Hz
-    TREBLE =        [500, 2000]        # Treble: 500 Hz to 2 kHz
+    LEDS = 10 # scaling factor, number of leds in each 'frequency bucket'
+    SUBBASS =       [50, 100]            # Sub Bass: 50 to 100 Hz
+    BASS1 =         [100, 250]           # Bass1: 100 to 250 Hz
+    BASS2 =         [250, 300]          # Bass2: 250 to 300 Hz
+    LOWMIDRANGE =   [300, 400]          # Low Midrange: 300 to 400 Hz
+    MIDRANGE =      [400, 500]           # Midrange: 400 to 500 Hz
+    TREBLE =        [500, 1500]        # Treble: 500 Hz to 1.5 kHz
 
     subBass =       averaging(SUBBASS[0], SUBBASS[1], spectrumHash)
     bass1 =         averaging(BASS1[0], BASS1[1], spectrumHash)
@@ -204,24 +205,22 @@ baseFolder = './AudioFiles/'
 sweep = baseFolder +'sweep20-20k.wav'
 hz60 = baseFolder +'60hz.wav'
 hz200 = baseFolder +'200hz.wav'
-hz1000 = baseFolder +'1000hz.wav'
-hz3000 = baseFolder +'3000hz.wav'
 drum = baseFolder +'drum.wav'
 # -------------------------------------------------
-""" Below is where the code executes the fft
+""" Below is where we execute the code to run the fft
 and send the arrays of LEDs to light to the Arduino"""
 
-sampFreq, snd = wavfile.read(light30)
+sampFreq, snd = wavfile.read(sweep)
 
 second = sampFreq # sampling frequency is = second of data
-window_size = second/40 # want 40 frames per second (fps), so want 40 windows/second
+fps = 40 # frames per second
+window_size = second/fps # want 40 frames per second (fps), so want 40 windows/second
 
 connection = '/dev/cu.usbmodem1411'
-
 ser = serial.Serial(connection, 115200, timeout=1)
 
 #open a wav format music
-f = wave.open(light30,"rb") #rb - read binary
+f = wave.open(sweep,"rb") #rb - read binary
 
 #instantiate PyAudio
 p = pyaudio.PyAudio()
@@ -240,21 +239,18 @@ stream = p.open(format = p.get_format_from_width(f.getsampwidth()),
 
 stream.start_stream()
 
-numSlices = 0
 for i in range(0, len(snd)-window_size, (window_size)): # range makes an array auto
-    numSlices += 1
     spectrum = returnSpectrum(snd[i:i+window_size], sampFreq)
     array = buckets(spectrum)
     data = formatData(array)
     ser.write(data)
-    time.sleep(0.020) # delay of 1/40fps = 0.020
+    time.sleep(0.020) # delay of 1/40fps
 
-# print numSlices
-# wait for stream to finish (5)
 while stream.is_active():
     time.sleep(0.1)
 
-ser.write("000000000000") # turn LEDs off
+ser.write("000000000000") #  turn LEDs off
+
 #stop stream
 stream.stop_stream()
 stream.close()
@@ -262,6 +258,7 @@ f.close()
 
 #close PyAudio
 p.terminate()
+
 
 ```
 
@@ -406,7 +403,6 @@ void turnAllOff() {
   }
 }
 
-
 ```
 * At this point I would load in a few test sound files with known frequencies. You should be able to see a certain bucket light up for that freqency. For example, if you run the 60-hz.wav file, you should ony see the first 10 LEDs light up for the duration of the sound file because this bucket encompasses frequencies from 20-60 Hertz.
 
@@ -426,30 +422,45 @@ void turnAllOff() {
 1. Test our your soldering techniques on some wire or components you won't need before jumping into soldering the crucial parts.
 
 1. Cut the Neopixels in the middle of the three copper oblongs.  These are what you'll be soldering to.  I cut too much on one side on the first cut, so I had toss that LED and adjust my code for 59 pixels instead of 60.
+<p>
 <img src="https://raw.githubusercontent.com/brittinator/OhMyBeats---Ada-Capstone/master/Images/construction/cut.png">
-You should end up with 6 equal strips of neopixels. <img src="https://raw.githubusercontent.com/brittinator/OhMyBeats---Ada-Capstone/master/Images/construction/strips.jpg">
+<p>
+You should end up with 6 equal strips of neopixels.
+<p>
+<img src="https://raw.githubusercontent.com/brittinator/OhMyBeats---Ada-Capstone/master/Images/construction/strips.jpg">
+<p>
 
-1. I plotted out where I wanted my LED strips to go onto my hat using pins. Mark where the top and bottom of the LEDs will be, as this is where your wires will go. <img src="https://raw.githubusercontent.com/brittinator/OhMyBeats---Ada-Capstone/master/Images/construction/hatwithled.jpg">
-
-1. Solder the wires onto the Blend Micro.  Black wires into the GND holes, red wire into the V33 hole, and green wire into pin 8. <img src="https://raw.githubusercontent.com/brittinator/OhMyBeats---Ada-Capstone/master/Images/construction/blend-final.jpg">
-
-1. Use wire stripper to strip a portion of your wires. Tin the ends of the wires so it'll be easier to solder the wires to the LEDs. Also tin the copper strips on the ends of the LEDs, making sure to keep the strips separate. <img src="https://raw.githubusercontent.com/brittinator/OhMyBeats---Ada-Capstone/master/Images/construction/solderingpixel.jpg">
+1. I plotted out where I wanted my LED strips to go using pins. Mark where the top and bottom of the LEDs will be, as this is where your wires will go.
+<p>
+<img src="https://raw.githubusercontent.com/brittinator/OhMyBeats---Ada-Capstone/master/Images/construction/hatwithled.jpg">
+<p>
 
 1. I drilled holes on the top and bottom of the front panel of the hat. This is where the wires will thread through, and also helps secure the LEDs in place.
 
-1. Make sure the wires you cut are long enough to go through your holes by pushing them into the holes.  Put the wires into the holes using a snake-like pattern.  I used clips to secure the wires so they didn't fall out of the holes. <img src="https://raw.githubusercontent.com/brittinator/OhMyBeats---Ada-Capstone/master/Images/construction/snakefinal.jpg">
+1. Solder the wires onto the Blend Micro.  Black wires into the GND holes, red wire into the V33 hole, and green wire into pin 8.
+<p>
+<img src="https://raw.githubusercontent.com/brittinator/OhMyBeats---Ada-Capstone/master/Images/construction/blend-final.jpg">
+<p>
+
+1. Use wire stripper to strip a portion of your wires. Tin the ends of the wires so it'll be easier to solder the wires to the LEDs. Also tin the copper strips on the ends of the LEDs, making sure to keep the strips separate.
+<p>
+<img src="https://raw.githubusercontent.com/brittinator/OhMyBeats---Ada-Capstone/master/Images/construction/solderingpixel.jpg">
+<p>
+
+1. Make sure the wires you cut are long enough to go through your holes by pushing them into the holes.  Put the wires into the holes using a snake-like pattern.  I used clips to secure the wires so they didn't fall out of the holes.
+<p>
+<img src="https://raw.githubusercontent.com/brittinator/OhMyBeats---Ada-Capstone/master/Images/construction/snakefinal.jpg">
+<p>
 
 1. The next step is soldering your pieces together.  I soldered bits at a time, and when I got the battery pack soldered to the arduino I checked to make sure it was getting power using the volt meter. When you are doing this, make sure any stray ground and power cords are not touching each other!
-
 Then when I soldered the first set of LEDs, I downloaded the `strandtest` that comes with the neopixel example library, and powered on the LEDs. You should see them light up, and if not check your connections before moving on.
-
 Troubleshooting: If you've checked your connections and still have no LEDs lit, load the `blink` test and make sure the onboard LED on the arduino is blinking.  You can find this in `file -> examples -> 01. basics -> blink`
 
 1. I repeat the process of soldering a new LED strand, and then turning power on to see if the LEDs are properly connected.
 
 1. When you are finished and have tested all LEDs, use shrink wrap or electrical tape to protect yourself from any exposed wires. This will also help decrease oxidation of the wires, which will make your project last longer.
 
-1. Optional: Make a housing at the top of the hat to protect your wires from detaching to components. I used cardboard and rubber bands. This would be a perfect time to use a circuit board, but I was running short on time. Secure this to the hat.
+1. Optional: Make a housing at the top of the hat to protect your wires from detaching to components. I used cardboard and rubber bands. This would be a perfect time to use a circuit board, but I was running short on time.
 
 1. Trace around your hat onto a piece of cardboard to make your secret hatch. Cut around this, only slightly larger than your tracing.
 
@@ -458,3 +469,5 @@ Troubleshooting: If you've checked your connections and still have no LEDs lit, 
 1. Drill a hole on one side of the cardboard/fabric, and place a piece of yarn/twist tie/cut rubber band as a holder to open/close it.
 
 1. My top hat was to large for me, so I added some padding around the bottom.
+
+### Load Programs
