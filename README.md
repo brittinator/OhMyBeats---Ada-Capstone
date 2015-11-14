@@ -11,16 +11,16 @@ This project is a top hat + LEDs that will display a live-view of music playing 
 
 ## Table of Contents
 1. [Overview](#overview)
-1. [Materials & Tools](#materials-&-tools)
+1. [Materials & Tools](#materials-and-tools)
 1. [Software](#software)
 1. [Safety](#safety)
 1. [Prototype Schematic](#prototype-schematic)
-1. [Python Code](#python)
-1. [Arduino Code](#arduino)
-1. [Hat Construction](#hats-construction)
+1. [Python Code](#python-code)
+1. [Arduino Code](#arduino-code)
+1. [Hat Construction](#hat-construction)
 
 
-# Materials & Tools
+# Materials and Tools
 (All prices in USD)
 * Black Top Hat = $12.00
 * 1 M x Adafruit NeoPixel Digital RGB LED Strip - Black 60 LED (BLACK), ID:1461 [Adafruit Link](http://www.adafruit.com/products/1461) = $24.95
@@ -66,7 +66,8 @@ The Blend Micro is an Arduino microcontroller that also houses an on-board bluet
 * Follow getting started [manual](http://redbearlab.com/getting-started-blendmicro) on how to get the libraries for the Blend Micro. I followed the [Quickstart with Codebender](http://redbearlab.com/quick-start-codebender) link.  
 * Follow this link for how to install the Neopixel Arduino Library [here](https://learn.adafruit.com/adafruit-neopixel-uberguide/arduino-library).
 
-# Safety <img src="https://raw.githubusercontent.com/brittinator/OhMyBeats---Ada-Capstone/master/Images/caution.png" width=100px>
+# Safety
+<img src="https://raw.githubusercontent.com/brittinator/OhMyBeats---Ada-Capstone/master/Images/caution.png" width=100px>
 
 * Polarized capacitors can heat up/burst if installed in the wrong direction. Place the negative side with the ground wire.
 
