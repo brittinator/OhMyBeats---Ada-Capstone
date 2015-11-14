@@ -11,8 +11,8 @@ This project is a top hat + LEDs that will display a live-view of music playing 
 
 ## Table of Contents
 1. [Overview](#overview)
-1. [Materials & Tools](Step 1)
-1. [Software](Step 2)
+1. [Materials & Tools](#step 1)
+1. [Software](#step 2)
 1. [Safety](Step 3)
 1. [Prototype Schematic](Step 4)
 1. [Python Code](Step 5)
