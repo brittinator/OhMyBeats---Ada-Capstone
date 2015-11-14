@@ -11,8 +11,8 @@ This project is a top hat + LEDs that will display a live-view of music playing 
 
 ## Table of Contents
 1. [Overview](#overview)
-1. [Materials & Tools](#step 1)
-1. [Software](#step 2)
+1. [Materials & Tools](#materials)
+1. [Software](#software)
 1. [Safety](Step 3)
 1. [Prototype Schematic](Step 4)
 1. [Python Code](Step 5)
@@ -20,7 +20,7 @@ This project is a top hat + LEDs that will display a live-view of music playing 
 1. [Hat Construction](Step 7)
 
 
-## Step 1: Materials & Tools
+# Materials & Tools
 (All prices in USD)
 * Black Top Hat = $12.00
 * 1 M x Adafruit NeoPixel Digital RGB LED Strip - Black 60 LED (BLACK), ID:1461 [Adafruit Link](http://www.adafruit.com/products/1461) = $24.95
@@ -55,7 +55,7 @@ NeoPixels are Adafruit's house brand of Red Green Blue (RGB) LEDs (Light Emittin
 
 The Blend Micro is an Arduino microcontroller that also houses an on-board bluetooth chip.  The micro utilizes bluetooth 4.0 Low Energy, (BLE) which makes this board not as power hungry as some other arduino shields or raspberry pi dongles. The micro-controller unit (MCU) is Atmel ATmega32U4 and the BLE chip is Nordic nRF8001.
 
- Step 2: Software
+# Software
 * Computer: Macbook Pro running Yosemite v 10.10.5
 * Processing software: Python 2.7.10 :: Anaconda 2.3.0 (x86_64)
   * Install from [python's website](https://www.python.org/downloads/)
