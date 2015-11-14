@@ -55,7 +55,7 @@ NeoPixels are Adafruit's house brand of Red Green Blue (RGB) LEDs (Light Emittin
 
 The Blend Micro is an Arduino microcontroller that also houses an on-board bluetooth chip.  The micro utilizes bluetooth 4.0 Low Energy, (BLE) which makes this board not as power hungry as some other arduino shields or raspberry pi dongles. The micro-controller unit (MCU) is Atmel ATmega32U4 and the BLE chip is Nordic nRF8001.
 
-## Step 2: Software
+ Step 2: Software
 * Computer: Macbook Pro running Yosemite v 10.10.5
 * Processing software: Python 2.7.10 :: Anaconda 2.3.0 (x86_64)
   * Install from [python's website](https://www.python.org/downloads/)
@@ -66,7 +66,7 @@ The Blend Micro is an Arduino microcontroller that also houses an on-board bluet
 * Follow getting started [manual](http://redbearlab.com/getting-started-blendmicro) on how to get the libraries for the Blend Micro. I followed the [Quickstart with Codebender](http://redbearlab.com/quick-start-codebender) link.  
 * Follow this link for how to install the Neopixel Arduino Library [here](https://learn.adafruit.com/adafruit-neopixel-uberguide/arduino-library).
 
-## Step 3 Safety <img src="https://raw.githubusercontent.com/brittinator/OhMyBeats---Ada-Capstone/master/Images/caution.png" width=100px>
+# Step 3 Safety <img src="https://raw.githubusercontent.com/brittinator/OhMyBeats---Ada-Capstone/master/Images/caution.png" width=100px>
 
 * Polarized capacitors can heat up/burst if installed in the wrong direction. Place the negative side with the ground wire.
 
@@ -87,7 +87,7 @@ From Adafruit's Neopixel [Uberguide](https://learn.adafruit.com/adafruit-neopixe
 * Make sure that your connections are secure. Alligator clips do not make reliable connections to the tiny solder pads on NeoPixel rings. Better to solder a small pigtail wire to the ring and attach the alligator clips to that.
 
 
-## Step 4: Prototype Schematic
+# Step 4: Prototype Schematic
 * I attached my components using a breadboard (no soldering necessary) as a first step.
 
 *  Run the 'strandtest' that comes with the Neopixel library to make sure the Aruino is communicating with your neopixels. Open the Arduino program, and navigate to:
@@ -96,7 +96,7 @@ From Adafruit's Neopixel [Uberguide](https://learn.adafruit.com/adafruit-neopixe
 
 ![schematic](https://raw.githubusercontent.com/brittinator/OhMyBeats---Ada-Capstone/master/Images/Schematic-OhMyBeats.png)
 
-## Step 5: Python Code
+# Step 5: Python Code
 
 My python code is in my GitHub repo [here](https://github.com/brittinator/OhMyBeats---Ada-Capstone/blob/master/musicFourierTransform.py).
 
@@ -273,7 +273,7 @@ p.terminate()
 
 ```
 
-## Step 6: Arduino Code
+# Step 6: Arduino Code
 My Arduino code is on Github [here](https://github.com/brittinator/OhMyBeats---Ada-Capstone/blob/master/musicalLeds/musicalLeds.ino).
 
 This code is written in Arduino's language which in based on C++. The whole Arduino interface is built upon loops, so you'll see a bunch of those in the following code.  It's purpose is to control the LEDs on the hat. It will be receiving a string of 12 characters long from the computer.
@@ -418,7 +418,7 @@ void turnAllOff() {
 
 * If all went well, continue onto step 5. Otherwise, look back at the code, and check your breadboard connections.
 
-## Step 7: Hat Construction
+# Step 7: Hat Construction
 
 ### Tips
 * Before this step, I would make sure both programs above are behaving properly.  It is easier to debug the whole thing in prototype stage rather than trying to determine if the problem is wiring vs. code not functioning.
@@ -479,4 +479,4 @@ Troubleshooting: If you've checked your connections and still have no LEDs lit, 
 
 1. My top hat was to large for me, so I added some padding around the bottom.
 
-### Load Programs
+# Load Programs
