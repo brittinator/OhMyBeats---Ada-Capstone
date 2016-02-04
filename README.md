@@ -481,3 +481,4 @@ Troubleshooting: If you've checked your connections and still have no LEDs lit, 
 1. My top hat was to large for me, so I added some padding around the bottom.
 
 # Load Programs
+* Load up your programs, type in the filename of your sound file and enjoy!
