@@ -5,7 +5,7 @@
 # Overview
 This is a guide for how to set up and implement a wearable top hat that responds to music input by displaying a visual equalizer.  
 
-"Oh My Beats" as I've called it is a wearable technology that will compliment any person who wants to share their music with people in a novel way.  Oh My Beats aims to be a gender neutral accessory so as to be an inclusive as possible.
+"Oh My Beats" as I've called it is a wearable technology that will compliment any person who wants to share their music with people in a novel way.  Oh My Beats aims to be a gender neutral accessory so as to be as inclusive as possible.
 
 This project is a top hat + LEDs that will display a live-view of music playing on a computer.
 
@@ -481,3 +481,4 @@ Troubleshooting: If you've checked your connections and still have no LEDs lit, 
 1. My top hat was to large for me, so I added some padding around the bottom.
 
 # Load Programs
+* Load up your programs, type in the filename of your sound file and enjoy!
