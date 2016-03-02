@@ -9,6 +9,10 @@ This is a guide for how to set up and implement a wearable top hat that responds
 
 This project is a top hat + LEDs that will display a live-view of music playing on a computer.
 
+Demonstration of the Hat in Action(https://youtu.be/nx_J7_ZcmMw)
+
+[Demonstration of the Hat in Action <img src="https://raw.githubusercontent.com/brittinator/OhMyBeats---Ada-Capstone/master/Images/HatInAction.png">](https://youtu.be/nx_J7_ZcmMw)
+
 ## Table of Contents
 1. [Overview](#overview)
 1. [Materials & Tools](#materials-and-tools)
