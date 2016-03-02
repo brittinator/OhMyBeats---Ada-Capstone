@@ -1,7 +1,7 @@
 # Oh My Beats
 ## A wearable combining music and visual display
 
-![img src="https://raw.githubusercontent.com/brittinator/OhMyBeats---Ada-Capstone/master/Images/process.png"] -->
+<img src="https://raw.githubusercontent.com/brittinator/OhMyBeats---Ada-Capstone/master/Images/process.png">
 
 # Overview
 This is a guide for how to set up and implement a wearable top hat that responds to music input by displaying a visual equalizer.  
