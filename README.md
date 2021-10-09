@@ -117,7 +117,7 @@ A fast fourier transform is performed on an imcoming music file,
 and then subsequentely averaged and normalized to the number of LEDs attached to the Arduino.
 I have 60 (-1, I broke one pixel) neopixels attached and have 6 buckets, so 10 LEDs/bucket.
 I normalize my data from 0-10.
-Created by Brittany L. Walentin October 2015
+Created by Brittinator October 2015
 """
 # Dependencies/libraries to import
 from scipy import fft, arange
