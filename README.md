@@ -288,7 +288,7 @@ This code is written in Arduino's language which in based on C++. The whole Ardu
 // This code is meant to be paired with my fft code in python found at
 // https://github.com/brittinator/OhMyBeats---Ada-Capstone/blob/master/musicFourierTransform.py.
 // This code's purpose is to control LEDs on the hat. It will be receiving a string of 12 characters long from the computer.
-// Brittany L. Walentin October 2015
+// Brittinator October 2015
 
 #include <Adafruit_NeoPixel.h>
 #define PIN 8
